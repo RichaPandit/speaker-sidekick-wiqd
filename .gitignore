@@ -1,0 +1,16 @@
+# TeamsFx / WIQD environment files
+env/.env.*
+.localConfigs
+
+# Generated packages
+appPackage/build/
+dev-package-check/
+
+# dependencies
+node_modules/
+
+# misc
+.env
+.deployment
+.DS_Store
+Thumbs.db

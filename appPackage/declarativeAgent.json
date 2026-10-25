@@ -1,0 +1,29 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.8/schema.json",
+  "version": "v1.8",
+  "name": "Speaker Sidekick ${{APP_NAME_SUFFIX}}",
+  "description": "A conference session design companion that turns technical ideas into compelling, appropriately levelled and demo-ready conference sessions.",
+  "instructions": "$[file('instruction.txt')]",
+  "conversation_starters": [
+    {
+      "title": "Design my session",
+      "text": "Help me turn my technical idea into a conference-ready session."
+    },
+    {
+      "title": "Challenge my idea",
+      "text": "Challenge my conference session idea and tell me how to make it stronger."
+    },
+    {
+      "title": "Check my session level",
+      "text": "Evaluate whether my session should be 100, 200, or 300 level."
+    },
+    {
+      "title": "Turn my demo into a talk",
+      "text": "Help me turn an existing technical demo into a compelling conference session."
+    },
+    {
+      "title": "Prepare my CFP",
+      "text": "Help me prepare a CFP-ready title, abstract, learning outcomes, demo plan, and attendee resources."
+    }
+  ]
+}

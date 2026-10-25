@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.29/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.29",
+  "version": "1.0.2",
+  "id": "${{TEAMS_APP_ID}}",
+  "developer": {
+    "name": "Richa Pandit",
+    "websiteUrl": "https://www.example.com",
+    "privacyUrl": "https://www.example.com/privacy",
+    "termsOfUseUrl": "https://www.example.com/termofuse"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "Speaker Sidekick",
+    "full": "Speaker Sidekick - Conference Session Designer"
+  },
+  "description": {
+    "short": "Turn technical ideas into conference-ready sessions.",
+    "full": "Speaker Sidekick helps technical speakers shape, challenge, and prepare conference sessions with CFP-ready abstracts, 100/200/300-level guidance, learning outcomes, session stories, demo plans, attendee resources, and QR code planning."
+  },
+  "accentColor": "#5B5FC7",
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [],
+  "copilotAgents": {
+    "declarativeAgents": [
+      {
+        "id": "declarativeAgent",
+        "file": "declarativeAgent.json"
+      }
+    ]
+  },
+  "agentSkills": [
+    {
+      "folder": "skills/design-conference-session"
+    }
+  ]
+}
