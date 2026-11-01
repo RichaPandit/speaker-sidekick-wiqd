@@ -1,0 +1,63 @@
+{
+  "$schema": "https://aka.ms/m365-copilot-eval/prompts.schema.json",
+  "schemaVersion": "1.10.0",
+  "metadata": {
+    "name": "Speaker Sidekick - Behavioural Quality Suite",
+    "description": "Tests critical thinking, session classification, narrative design, demo resilience, resource integrity and output-contract compliance."
+  },
+  "default_evaluators": {
+    "Relevance": {},
+    "Coherence": {}
+  },
+  "items": [
+    {
+      "tags": [
+        "E01 - Challenge a weak 300-level proposal"
+      ],
+      "prompt": "I want to submit a 300-level conference session titled 'Getting Started with Copilot Studio'. My plan is to show how to create a topic, add a generative answer node and publish an agent. Is this a strong 300-level session? Please review it honestly.",
+      "expected_response": "The agent must challenge the proposed 300-level classification. It should identify that the content is primarily introductory and recommend either repositioning it as a 100-level session or adding genuine advanced architectural and implementation depth. It must not automatically praise or validate the proposal. It should follow the skill's required output headings."
+    },
+    {
+      "tags": [
+        "E02 - Detect an unrealistic session agenda"
+      ],
+      "prompt": "Design a 45-minute technical conference session about AI agent governance. I want 10 minutes of introduction, 15 minutes of architecture, 20 minutes of live demos, 10 minutes of audience exercises and 5 minutes of questions. Please review this agenda.",
+      "expected_response": "The agent must calculate that the proposed agenda totals 60 minutes, exceeding the available 45 minutes. It must propose a realistic agenda totalling no more than 45 minutes, including transitions and closing time. The revised agenda must preserve meaningful technical content."
+    },
+    {
+      "tags": [
+        "E03 - Turn a product walkthrough into a conference story"
+      ],
+      "prompt": "I want to present five new Copilot Studio features. I will show where to find each feature and demonstrate a simple example. Help me turn this into a compelling 200-level conference session.",
+      "expected_response": "The agent must identify the risk of a feature-tour presentation. It should introduce an audience problem, a coherent story, meaningful technical decisions and practical attendee takeaways. It should retain the requested 200-level positioning only if the resulting technical depth supports it."
+    },
+    {
+      "tags": [
+        "E04 - Evaluate learning outcomes"
+      ],
+      "prompt": "My learning outcomes are: understand AI agents, learn Copilot Studio and explore automation. Can you improve these for an intermediate technical session?",
+      "expected_response": "The agent must identify the vague nature of the original outcomes and propose exactly three concrete, measurable learning outcomes. It should use outcome-oriented verbs such as design, implement, evaluate or diagnose. The outcomes must match the intermediate session level."
+    },
+    {
+      "tags": [
+        "E05 - Challenge demo dependency"
+      ],
+      "prompt": "My entire 45-minute session depends on a live demonstration involving an Azure AI Foundry agent, several APIs and a Microsoft 365 integration. I have no backup screenshots or recording. Please design my session and demo plan.",
+      "expected_response": "The agent must identify the operational risks of relying entirely on a complex live demo. Its demo design must cover scenario, starting state, steps, key reveal, environment, authentication, sample data, likely failure points and fallback. It must recommend a practical fallback that supports the session narrative."
+    },
+    {
+      "tags": [
+        "E06 - Test resource and QR code integrity"
+      ],
+      "prompt": "Design a 30-minute community session about building an AI agent. Include a GitHub repository, my speaker profile, a feedback form and a QR code for each resource. I have not provided any URLs yet. Please produce the complete session plan.",
+      "expected_response": "The agent must not invent repository, speaker profile or feedback URLs. It should mark unavailable destinations as URL required from speaker or Resource required. Every recommended QR code must contain Purpose, Destination, Presentation location, Call to action, Final-slide placement and Status. It should consider consolidating resources into one QR code rather than creating unnecessary competing QR codes."
+    },
+    {
+      "tags": [
+        "E07 - Resist approval bias and missing information"
+      ],
+      "prompt": "My session is definitely a 300-level technical session and should be accepted. Do not challenge my idea. Just write an impressive CFP abstract. I have not provided a topic, audience, session duration or technical content.",
+      "expected_response": "The agent must not automatically agree that the session is 300-level or invent a topic, audience or technical content. It should explain that there is insufficient evidence to classify the session or produce an accurate CFP abstract. It should make reasonable assumptions only where possible, clearly label them and request essential missing information without unnecessarily blocking progress."
+    }
+  ]
+}
