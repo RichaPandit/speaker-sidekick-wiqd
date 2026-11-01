@@ -346,81 +346,6 @@ Remove-Item Env:APP_NAME_SUFFIX -ErrorAction SilentlyContinue
 
 ---
 
-## 🔍 Inspecting the generated package
-
-When diagnosing environment resolution, inspect the actual packaged ZIP rather than only checking the source files.
-
-Extract the Dev package:
-
-```powershell
-Remove-Item `
-  .\dev-package-check `
-  -Recurse `
-  -Force `
-  -ErrorAction SilentlyContinue
-
-Expand-Archive `
-  .\appPackage\build\appPackage.dev.zip `
-  .\dev-package-check `
-  -Force
-```
-
-Check the resolved agent name:
-
-```powershell
-Get-Content `
-  .\dev-package-check\declarativeAgent.json |
-  Select-String '"name"'
-```
-
-Expected result:
-
-```json
-"name": "Speaker Sidekick - [Dev]"
-```
-
-The source file can still contain the environment-variable expression. The extracted ZIP shows the value that was actually resolved during packaging.
-
----
-
-## 🔐 Repository safety
-
-Provisioned environment files and generated packages are excluded from source control.
-
-The `.gitignore` should include:
-
-```gitignore
-# TeamsFx / WIQD environment files
-env/.env.*
-.localConfigs
-
-# Generated packages
-appPackage/build/
-dev-package-check/
-.evals/
-
-# Dependencies
-node_modules/
-
-# Miscellaneous
-.env
-.deployment
-.DS_Store
-Thumbs.db
-```
-
-Do not commit:
-
-- Tenant IDs
-- Teams application IDs
-- Microsoft 365 application IDs
-- Microsoft 365 Title IDs
-- Share links
-- Generated deployment metadata
-- Packaged ZIP files
-
----
-
 ## 📁 Project structure
 
 ```text
@@ -660,3 +585,78 @@ If Speaker Sidekick gives you ideas for your own reusable agent skills, feel fre
 - Adapt the skill
 - Submit an issue
 - Share what you build
+
+---
+
+## 🔍 Inspecting the generated package
+
+When diagnosing environment resolution, inspect the actual packaged ZIP rather than only checking the source files.
+
+Extract the Dev package:
+
+```powershell
+Remove-Item `
+  .\dev-package-check `
+  -Recurse `
+  -Force `
+  -ErrorAction SilentlyContinue
+
+Expand-Archive `
+  .\appPackage\build\appPackage.dev.zip `
+  .\dev-package-check `
+  -Force
+```
+
+Check the resolved agent name:
+
+```powershell
+Get-Content `
+  .\dev-package-check\declarativeAgent.json |
+  Select-String '"name"'
+```
+
+Expected result:
+
+```json
+"name": "Speaker Sidekick - [Dev]"
+```
+
+The source file can still contain the environment-variable expression. The extracted ZIP shows the value that was actually resolved during packaging.
+
+---
+
+## 🔐 Repository safety
+
+Provisioned environment files and generated packages are excluded from source control.
+
+The `.gitignore` should include:
+
+```gitignore
+# TeamsFx / WIQD environment files
+env/.env.*
+.localConfigs
+
+# Generated packages
+appPackage/build/
+dev-package-check/
+.evals/
+
+# Dependencies
+node_modules/
+
+# Miscellaneous
+.env
+.deployment
+.DS_Store
+Thumbs.db
+```
+
+Do not commit:
+
+- Tenant IDs
+- Teams application IDs
+- Microsoft 365 application IDs
+- Microsoft 365 Title IDs
+- Share links
+- Generated deployment metadata
+- Packaged ZIP files
