@@ -554,6 +554,58 @@ wiqd plugin package --env dev
 
 ---
 
+## 🧪 Evaluate and monitor
+
+Evaluations and monitoring target a deployed declarative agent. They are separate workflows with different prerequisites.
+
+### Evaluate the deployed agent
+
+Before running evaluations:
+
+1. Confirm the agent is deployed in the target environment and identify its Microsoft 365 title ID.
+2. Confirm the selected tenant and account are correct. Keep tenant and account values in the environment/user files; do not commit them.
+3. Sign in to GitHub CLI (`gh auth login`) when using the GitHub Copilot judge, which is the WIQD default.
+4. Ensure the eval dataset uses the current runevals schema. Individual prompt items use `tags` for labels; `name` is only supported on multi-turn threads.
+5. Remember that Work IQ agent access and judge authentication are separate. A successful WIQD sign-in does not populate the evaluation CLI's independent Microsoft authentication cache.
+
+Run the repository's behavioral suite from a Bash-compatible terminal:
+
+```bash
+export PATH="$HOME/.npm-global/bin:$HOME/.local/bin:$PATH"
+wiqd agent eval \
+  --env dev \
+  --path . \
+  --config evals/prompts.json \
+  --output .evals/results.json \
+  --agent-id "<M365_TITLE_ID>" \
+  --account "<email-or-UPN>" \
+  --judge-backend github-copilot \
+  --eval-log-level debug
+```
+
+The CLI may prompt for Microsoft authentication on first run. The GitHub Copilot judge also requires a signed-in `gh` session. Use `--judge-backend azure` instead only when the required Azure AI evaluator configuration is available.
+
+Review `.evals/results.json` after the run. A successful authentication alone does not mean prompts passed: check each item's status and response. For example, an HTTP 403 `NoPolicy` response indicates the agent was not evaluated; review the tenant's Work IQ usage-based access policy and Consumption view.
+
+### Monitor the agent
+
+`wiqd agent monitor` sends its query to a fixed Microsoft-managed Insights Agent, not directly to the deployed agent. Before relying on monitor:
+
+1. Confirm the target declarative agent is deployed and visible to the Work IQ account in the intended tenant.
+2. Verify the Insights Agent is reachable by running a monitor smoke test for the target environment:
+
+   ```bash
+   wiqd agent monitor \
+     --env dev \
+     --path . \
+     --query "Summarize available usage and performance for Speaker Sidekick. Distinguish unavailable metrics from zero activity."
+   ```
+
+3. If the command reports that its Insights Agent ID was not found, record monitoring as unavailable and contact WIQD/Work IQ support. Do not pass the Speaker Sidekick title ID as a monitor target or assume provisioning your agent enables the Insights Agent.
+4. Treat missing telemetry as unknown, not as zero activity. For usage-based Work IQ consumption, also check the Microsoft 365 admin center's Consumption view; that is separate from Insights Agent monitoring.
+
+---
+
 ## 🚧 Project status
 
 This is an experimental learning project built using preview developer tooling.
