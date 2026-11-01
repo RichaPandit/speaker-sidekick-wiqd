@@ -452,6 +452,7 @@ To work with this project, you need:
 - WIQD CLI
 - Microsoft 365 sign-in
 - Access to a Microsoft 365 tenant that supports the required agent experiences
+- GitHub CLI, if running evaluations with the GitHub Copilot judge (WIQD default)
 - Git, if contributing through source control
 - Visual Studio Code, recommended but not required
 
@@ -482,11 +483,78 @@ Accept the Work IQ EULA when required:
 wiqd eula accept workiq
 ```
 
-Authenticate interactively:
+### Enable Work IQ in your Microsoft 365 tenant
+
+Before using Work IQ capabilities through WIQD, the Work IQ service principal may need to be provisioned in your Microsoft Entra tenant. This is a one-time tenant-level operation and requires appropriate administrative permissions.
+
+#### 1. Open Microsoft Graph Explorer
+
+Go to [Microsoft Graph Explorer](https://aka.ms/ge) and sign in with an account that has the required administrative privileges.
+
+#### 2. Grant the Microsoft Graph permission
+
+1. Open **Modify permissions**.
+2. Search for `Application.ReadWrite.All`.
+3. Add the permission and grant admin consent.
+4. Confirm the permission is shown as consented.
+
+This permission allows application and service-principal management. Grant it only with appropriate administrator approval, and remove the permission from Graph Explorer when it is no longer needed.
+
+#### 3. Check whether the Work IQ service principal exists
+
+Set the HTTP method to `GET` and use:
+
+```http
+GET https://graph.microsoft.com/v1.0/servicePrincipals?$filter=appId eq 'fdcc1f02-fc51-4226-8753-f668596af7f7'&$select=id,appId,displayName
+```
+
+If the response contains an entry, the service principal is already provisioned; continue to step 5.
+
+#### 4. Create the Work IQ service principal if needed
+
+Only if the previous request returns an empty `value` array, change the HTTP method to `POST` and use:
+
+```http
+POST https://graph.microsoft.com/v1.0/servicePrincipals
+Content-Type: application/json
+```
+
+Request body:
+
+```json
+{
+  "appId": "fdcc1f02-fc51-4226-8753-f668596af7f7"
+}
+```
+
+A `201 Created` response confirms successful creation. If Graph returns a conflict because the service principal already exists, run the GET request again to verify it.
+
+#### 5. Authenticate WIQD
+
+Creating the Work IQ service principal is separate from authenticating a developer through WIQD. It also does not automatically grant every user access to all Work IQ capabilities; additional permissions, policies, or licensing requirements may apply depending on the functionality.
 
 ```powershell
 wiqd auth login --interactive
+wiqd auth status
 ```
+
+### GitHub CLI for evaluations
+
+The GitHub Copilot evaluation judge requires GitHub CLI (`gh`) to be installed and authenticated. Install it using the [official installation instructions](https://github.com/cli/cli#installation). On macOS, use `brew install gh` if Homebrew is installed, or download the matching macOS archive from the [GitHub CLI releases](https://github.com/cli/cli/releases/latest). On Windows, you can install it with:
+
+```powershell
+winget install --id GitHub.cli
+```
+
+Open a new terminal, then verify the installation and sign in:
+
+```powershell
+gh --version
+gh auth login --hostname github.com --git-protocol https --web
+gh auth status
+```
+
+If you use the Azure judge with its required Azure AI configuration instead, GitHub CLI authentication is not needed.
 
 ---
 
